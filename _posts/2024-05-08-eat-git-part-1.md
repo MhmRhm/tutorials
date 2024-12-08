@@ -7,6 +7,9 @@ categories: [Git, Programming]
 tags: [git, version-control]
 pin: true
 date: 2024-05-08
+image:
+  path: /assets/images/Git-Logo-1788C.svg
+  alt: Git tutorial to teach you everything you need to know
 ---
 
 ## Preface

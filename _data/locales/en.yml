@@ -1,0 +1,14 @@
+copyright:
+  # Shown at the bottom of the post
+  license:
+    template: This post is licensed under :LICENSE_NAME by the author.
+    name: MIT License
+    link: https://mit-license.org
+
+  # Displayed in the footer
+  brief: The MIT License
+  verbose: >-
+    Except where otherwise noted, the blog posts on this site are licensed
+    under the MIT License by the author.
+
+meta: Using the :THEME theme for :PLATFORM.
