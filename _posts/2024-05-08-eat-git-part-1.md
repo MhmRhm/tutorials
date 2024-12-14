@@ -566,7 +566,7 @@ git log --oneline --all --graph
 # * a37e3d4 (HEAD -> feat2) Add Tapper
 # | * dc51eef (feat1) Add Phillip
 # | * 6139f8f (main) Add King
-# |/  
+# |/
 # * 68d9628 Add Cooper
 # * 8c61dd6 Add Berman and Bash
 ```
@@ -696,7 +696,7 @@ index 81a0898..41dbb15 100644
 -          node-version: 16
 +          node-version: 20
            cache: 'pnpm'
- 
+
        - name: Install dependencies
 ```
 

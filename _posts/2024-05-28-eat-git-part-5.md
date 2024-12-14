@@ -178,7 +178,7 @@ git log --oneline --all --graph
 # * 2482827 (main) 07:52:52
 # | * c346fee (HEAD -> recover) 07:28:25
 # | * e703ac0 07:28:22
-# |/  
+# |/
 # * a80f490 07:28:19
 ```
 
@@ -252,11 +252,11 @@ git fetch origin
 git log --oneline --all --graph
 # * 3c2a116 (HEAD -> main) 03:55:41
 # | * 3cd7b4b (origin/main) 03:53:14
-# |/  
+# |/
 # * 2482827 07:52:52
 # | * c346fee (recover) 07:28:25
 # | * e703ac0 07:28:22
-# |/  
+# |/
 # * a80f490 07:28:19
 ```
 
@@ -270,11 +270,11 @@ git pull origin main
 # hint: You have divergent branches and need to specify how to reconcile them.
 # hint: You can do so by running one of the following commands sometime before
 # hint: your next pull:
-# hint: 
+# hint:
 # hint:   git config pull.rebase false  # merge (the default strategy)
 # hint:   git config pull.rebase true   # rebase
 # hint:   git config pull.ff only       # fast-forward only
-# hint: 
+# hint:
 # hint: You can replace "git config" with "git config --global" to set a default
 # hint: preference for all repositories. You can also pass --rebase, --no-rebase,
 # hint: or --ff-only on the command line to override the configured default per
@@ -308,7 +308,7 @@ git log --oneline --all --graph
 # * 2482827 07:52:52
 # | * c346fee (recover) 07:28:25
 # | * e703ac0 07:28:22
-# |/  
+# |/
 # * a80f490 07:28:19
 ```
 
@@ -382,7 +382,7 @@ git checkout main
 git filter-branch --tree-filter '
 if [ -f t.md ]; then
     sed -i 's/07:28:19/redacted/g' t.md
-fi              
+fi
 ' test
 
 git log --patch test

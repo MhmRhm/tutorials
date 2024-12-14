@@ -177,7 +177,7 @@ git log msnbc
 #
 #     Add Joe, Mika and Willie
 
-git log fox-news 
+git log fox-news
 # commit b9b4fd7d46619cc2af50b189887b04e57b3f8327 (fox-news)
 # Author: Mohammad Rahimi <rahimi.mhmmd@yahoo.com>
 # Date:   Sat May 25 11:37:16 2024 +0800
@@ -317,7 +317,7 @@ echo 'Andrea Mitchell' >> employees.md
 git add employees.md
 git commit --amend -m 'Add Maddow and Mitchell'
 
-git push press-room main:msnbc 
+git push press-room main:msnbc
 # To ../correspondents/
 #  ! [rejected]        main -> msnbc (non-fast-forward)
 # error: failed to push some refs to '../correspondents/'
@@ -369,13 +369,13 @@ resolve this problem, we can reset our local branch to one commit before,
 effectively removing the last commit, and then pull again:
 
 ```bash
-git log --oneline 
+git log --oneline
 # 7d2e842 (HEAD -> channel-1) Add Maddow
 # d8a2820 Add Joe, Mika and Willie
 
 git reset --hard HEAD~
 
-git log --oneline 
+git log --oneline
 # d8a2820 (HEAD -> channel-1) Add Joe, Mika and Willie
 
 git pull tv msnbc
@@ -550,7 +550,7 @@ git log --oneline --all --graph
 # * dc3a6d3 20:14:04
 # | * ef67eb8 (feat1) 20:14:01
 # | * 885a51c 20:13:58
-# |/  
+# |/
 # * c8ccc48 (main) 20:12:40
 # * c354199 20:12:37
 ```
@@ -571,7 +571,7 @@ git log --oneline --all --graph
 # * dc3a6d3 20:14:04
 # | * ef67eb8 (HEAD -> main, feat1) 20:14:01
 # | * 885a51c 20:13:58
-# |/  
+# |/
 # * c8ccc48 20:12:40
 # * c354199 20:12:37
 ```
@@ -593,12 +593,12 @@ was not possible; in other words, we merged two diverged branches.
 ```bash
 git log --oneline --all --graph
 # *   c1e2259 (HEAD -> main) Merge branch 'feat2'
-# |\  
+# |\
 # | * b09b046 (feat2) 20:14:07
 # | * dc3a6d3 20:14:04
 # * | ef67eb8 (feat1) 20:14:01
 # * | 885a51c 20:13:58
-# |/  
+# |/
 # * c8ccc48 20:12:40
 # * c354199 20:12:37
 ```
@@ -702,7 +702,7 @@ git log --oneline --all --graph
 # * 555ce45 07:20:57
 # | * 4e0cc3f (main) 07:20:52
 # | * 3c31ef2 07:20:49
-# |/  
+# |/
 # *   c1e2259 Merge branch 'feat2'
 ```
 
@@ -873,12 +873,12 @@ And continue with the merge which will ask for a commit message:
 ```bash
 git merge --continue
 
-git log --oneline --all --graph 
+git log --oneline --all --graph
 # *   546e0ac (HEAD -> main) Merge branch 'feat'
-# |\  
+# |\
 # | * e9b16ef (feat) 20:07:06
 # * | 6574241 20:07:09
-# |/  
+# |/
 # * dec4cb3 20:07:03
 ```
 
@@ -954,7 +954,7 @@ git log --oneline --all --graph
 # * 13daa1d 08:26:31
 # | * 1bea4e6 (feat) 08:26:34
 # | * cee92fe 08:26:28
-# |/  
+# |/
 # * bfed5e1 08:26:25
 ```
 
@@ -1049,7 +1049,7 @@ git log --oneline --all --graph
 ```
 
 If you find yourself resolving the same conflicts repeatedly during each rebase,
-consider using [Rerere][rerere]. 
+consider using [Rerere][rerere].
 
 Rerere stands for "reuse recorded resolution" and helps Git remember how you've
 resolved conflicts in the past. This feature can save you time and effort by

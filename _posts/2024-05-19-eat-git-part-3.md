@@ -27,7 +27,7 @@ access to your repository, they can use `git diff` and `git log` to see what
 you've done. However, in the open-source community, this isn't always the case.
 Patch files offer a way to share your work without relying on branches, making
 them more flexible. You can store patch files on a USB stick or send them via
-email. Creating patch files is quite easy. 
+email. Creating patch files is quite easy.
 
 To demonstrate, let's continue with our CNN anchors example. Since you may have
 conducted experiments in previous part, I will remove the directory and
@@ -105,7 +105,7 @@ cat 0001-Add-Phillip.patch
 #  Jake Tapper
 #  Chris Wallace
 # +Abby Phillip
-# -- 
+# --
 # 2.45.GIT
 #
 ```
@@ -132,7 +132,7 @@ git checkout main
 
 git apply 0001-Add-Phillip.patch
 
-git status 
+git status
 # On branch main
 # Changes not staged for commit:
 #   (use "git add <file>..." to update what will be committed)
@@ -170,7 +170,7 @@ git log --oneline --all --graph
 # * 548e193 (HEAD -> main) Add Phillip
 # | * 2dcbac8 (woke) Add Cornish and Asher
 # | * 6bc2c0a Add Phillip
-# |/  
+# |/
 # * a48e1bb Add Cooper, Tapper and Wallace
 
 git cat-file -p 548e193
