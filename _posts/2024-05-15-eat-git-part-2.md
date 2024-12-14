@@ -361,7 +361,7 @@ git log --oneline --all --graph
 # * 1f2ebc3 (new-feat) Add Keilar
 # | * 94e59e2 (feat) Add Gangel
 # | * 7c214b3 (HEAD -> main) Add Blitzer
-# |/  
+# |/
 # * 130a621 Add Berman and Bash
 
 git show new-feat
