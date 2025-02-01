@@ -31,6 +31,7 @@ Or these tutorials:
 
 - [EatGit]({% link _posts/2024-05-08-eat-git-part-1.md %})
 - [SeeMake]({% link _posts/2024-09-24-see-make.md %})
+- [GDBugging]({% link _posts/2024-12-8-gdbugging-101.md %})
 
 [dot-bash-history-repo]: https://github.com/MhmRhm/DotBashHistory
 [cpp-lab-repo]: https://github.com/MhmRhm/cpplab
