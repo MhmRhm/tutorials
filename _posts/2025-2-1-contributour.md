@@ -119,7 +119,7 @@ sudo apt-get install -y \
   bc bpfcc-tools bsdextrautils tldr-py trace-cmd tree tuna virt-what yad
   clang coccinelle coreutils cppcheck cscope curl exuberant-ctags \
   fakeroot flawfinder git gnuplot hwloc indent kmod libnuma-dev \
-  man-db net-tools numactl perf-tools-unstable procps psmisc  \
+  man-db net-tools numactl perf-tools-unstable procps psmisc \
   linux-headers-$(uname -r) linux-tools-$(uname -r) \
   rt-tests smem sparse stress stress-ng sysfsutils
 
@@ -127,7 +127,7 @@ sudo apt-get install -y \
 sudo apt-get autoremove
 ```
 
-And finally, clone a suitable codebase from [Kernel.org git repositories](https://git.kernel.org):  
+And finally, clone a suitable codebase from [Kernel.org git repositories](https://git.kernel.org):
 
 ```bash
 git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
@@ -135,10 +135,169 @@ git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 
 ### Configure the Kernel
 
+To build a kernel quickly, I use the following commands:
 
+```bash
+# Clean everything
+make mrproper
+# Build only with currently loaded modules
+# Remove all custom modules if any
+make localmodconfig
+# Add or remove specific options
+make menuconfig
+```
+
+For cross-compiling on an SoC, use the same commands with a cross-compiler
+prefix:
+
+```bash
+# For 32/64-bit
+KERNEL=kernel8
+# Copy the original configuration
+scp <user>@<address>:/boot/config* .config
+# Configure the kernel based on the original one
+make ARCH=arm64 olddefconfig
+make ARCH=arm64 menuconfig
+```
+
+[The Linux kernel](https://www.raspberrypi.com/documentation/computers/linux_kernel.html)
+documentation for Raspberry Pi provides a thorough guide on kernel builds.
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+>There is a tool inside the Linux source code that allows you to change any
+configuration with a single command:
+`scripts/config --enable CONFIG_DEBUG_KERNEL`
+{: .prompt-tip }
+<!-- markdownlint-restore -->
+
+I use the following script to enable many debugging capabilities inside the
+kernel during the configuration:
+
+```bash
+#!/bin/bash
+# Generic kernel debugging instruments
+scripts/config --enable CONFIG_DEBUG_KERNEL
+scripts/config --enable CONFIG_DEBUG_INFO
+scripts/config --enable CONFIG_DEBUG_MISC
+scripts/config --enable CONFIG_MAGIC_SYSRQ
+scripts/config --enable CONFIG_DEBUG_FS
+scripts/config --enable CONFIG_KGDB
+scripts/config --enable CONFIG_UBSAN
+scripts/config --enable CONFIG_KCSAN
+# Memory debugging
+scripts/config --enable CONFIG_DEBUG_PAGEALLOC
+scripts/config --enable CONFIG_DEBUG_PAGEALLOC_ENABLE_DEFAULT
+scripts/config --enable CONFIG_SLUB_DEBUG
+scripts/config --enable CONFIG_DEBUG_MEMORY_INIT
+scripts/config --enable CONFIG_KASAN
+scripts/config --enable CONFIG_DEBUG_SHIRQ
+scripts/config --enable CONFIG_SCHED_STACK_END_CHECK
+scripts/config --enable CONFIG_DEBUG_PREEMPT
+# Lock debugging
+scripts/config --enable CONFIG_PROVE_LOCKING
+scripts/config --enable CONFIG_RCU_EXPERT
+scripts/config --enable CONFIG_LOCK_STAT
+scripts/config --enable CONFIG_DEBUG_RT_MUTEXES
+scripts/config --enable CONFIG_DEBUG_MUTEXES
+scripts/config --enable CONFIG_DEBUG_SPINLOCK
+scripts/config --enable CONFIG_DEBUG_RWSEMS
+scripts/config --enable CONFIG_DEBUG_LOCK_ALLOC
+scripts/config --enable CONFIG_DEBUG_ATOMIC_SLEEP
+scripts/config --enable CONFIG_PROVE_RCU_LIST
+scripts/config --enable CONFIG_DEBUG_OBJECTS_RCU_HEAD
+scripts/config --enable CONFIG_BUG_ON_DATA_CORRUPTION
+scripts/config --enable CONFIG_STACKTRACE
+scripts/config --enable CONFIG_DEBUG_BUGVERBOSE
+scripts/config --enable CONFIG_FTRACE
+scripts/config --enable CONFIG_FUNCTION_TRACER
+scripts/config --enable CONFIG_FUNCTION_GRAPH_TRACER
+# Arch specific
+scripts/config --enable CONFIG_FRAME_POINTER
+scripts/config --enable CONFIG_STACK_VALIDATION
+```
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+>While inside `make menuconfig`, you can use `/` to search for a configuration.
+Then, press `1` (or the appropriate number) to go from the search screen to the
+menu item for the first entry found.
+{: .prompt-tip }
+<!-- markdownlint-restore -->
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+>Make sure the `CONFIG_SYSTEM_REVOCATION_KEYS` is empty.
+{: .prompt-tip }
+<!-- markdownlint-restore -->
 
 ### Build the Kernel
+
+This is the easy part:
+
+```bash
+# Actual build
+make -j$(nproc) all
+```
+
+When cross-compiling:
+
+```bash
+# Actual build
+make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- all
+# Package the generated artifacts
+make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- deb-pkg
+# Copy the new kernel to the SoC for installation later
+cd ..
+scp *.deb <user>@<address>:/home/<user>
+```
+
 ### Install the Kernel
+
+For a native build:
+
+```bash
+# Install modules
+sudo make modules_install
+# Install the kernel and update GRUB
+sudo make install
+```
+
+Or on your SoC:
+
+```bash
+# Install the new kernel
+sudo dpkg -i *.deb
+```
+
+If GRUB is your bootloader, you can modify its behavior by editing the file at `/etc/default/grub`:
+
+```bash
+# Example edits:
+GRUB_TIMEOUT_STYLE=menu
+GRUB_TIMEOUT=3
+GRUB_SAVEDEFAULT=true
+GRUB_DEFAULT=saved
+GRUB_CMDLINE_LINUX=""
+```
+
+Don't forget to run `sudo update-grub`. Below are some useful kernel command-line
+arguments:
+
+- To enable kernel debug messages: `debug`
+- To output loglevels less than `n`: `loglevel=n`
+- To let the kernel be preempted: `preempt=full`
+- To isolate CPUs from the scheduler: `isolcpus=0,4-8`
+- To boot into single-user mode: `single`
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+>If U-Boot is your bootloader, connect your SoC's serial port to your PC. During
+boot, press any key on the keyboard to access the U-Boot command line. Once
+there, you can add kernel command-line arguments like this:
+`setenv extraargs ${extraargs} systemd.unit=rescue.target; env print;`
+{: .prompt-tip }
+<!-- markdownlint-restore -->
 
 ## Why Patch Files
 ## Checking for Style
