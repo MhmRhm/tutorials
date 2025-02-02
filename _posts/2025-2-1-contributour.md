@@ -2,7 +2,7 @@
 title: "ContribuTour"
 excerpt: "Explore essential tools and workflows for contributing to open source projects."
 seo_description: "Learn the tools, workflows, and best practices for effective open source contributions."
-description: "A practical guide covering tools, workflows, and best practices for contributing to open source projects."
+description: "A tour covering tools, workflows, and best practices for contributing to open source projects."
 categories: [Open Source, Linux]
 tags: [open-source, linux, git, github, contribution]
 pin: true
@@ -300,9 +300,213 @@ there, you can add kernel command-line arguments like this:
 <!-- markdownlint-restore -->
 
 ## Why Patch Files
+
+Patch files are portable and plain text, which means the community doesn't need
+to rely on a provider like GitHub to track branches and merge pull requests. When
+patch files are sent as plain text emails, the review and back-and-forth
+communication can also occur with any email client.
+
+When your testing is complete and you have committed your work, create a patch
+file with:
+
+```bash
+git format-patch origin/master -o ../
+```
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+>See the guidelines for [The canonical patch format](https://docs.kernel.org/process/submitting-patches.html#the-canonical-patch-format)
+and how to [Describe your changes](https://docs.kernel.org/process/submitting-patches.html#describe-your-changes).
+{: .prompt-tip }
+<!-- markdownlint-restore -->
+
 ## Checking for Style
+
+Make sure to [Style-check your changes](https://docs.kernel.org/process/submitting-patches.html#style-check-your-changes)
+before submitting any patches. To style-check your changes without creating any
+patch files:
+
+```bash
+git checkout feat
+git format-patch origin/master --stdout | ./scripts/checkpatch.pl
+```
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+>Use `git commit --amend -s` to sign your commit.
+{: .prompt-tip }
+<!-- markdownlint-restore -->
+
 ## Finding Maintainers
-## Sending Emails
-## Replying to Emails
+
+We use another tool in the `scripts` subfolder of the Linux source code to find
+relevant maintainers for our patch. This tool checks which files have been
+modified in the commit and prints the maintainers' names and email addresses.
+
+```bash
+git checkout feat
+git format-patch origin/master --stdout | ./scripts/get_maintainer.pl
+```
+
+## Submit Your Patch
+
+All that to just send an email! Don't worry, Git has you covered:
+
+```bash
+git send-email --to=maintainer1@linux.com --cc=maintainer2@linux.com \
+  --cc=maintainer3@linux.com master..feat
+```
+
+Before sending emails with Git, you need to install `git-email` and configure it
+with your email provider's server information. The following shows how to do it
+for Gmail:  
+
+```bash
+# Install git-email
+sudo apt-get install git-email
+# Use Gmail as the SMTP server
+git config --global sendemail.smtpEncryption tls
+git config --global sendemail.smtpServer smtp.gmail.com
+git config --global sendemail.smtpUser yourname@gmail.com
+git config --global sendemail.smtpServerPort 587
+```
+
+It's not over yet. You need to enable two-step verification on Gmail and generate
+an [Application Password](https://security.google.com/settings/security/apppasswords)
+to use when Git asks for it.
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+>Have a look at the [git-send-email](https://git-scm.com/docs/git-send-email)
+documentation.
+{: .prompt-tip }
+<!-- markdownlint-restore -->
+
 ## Sending a v2 of Your Patch
+
+It is very likely that your patch will not be accepted on the first submission.
+When you receive an email with comments from the maintainer, apply those changes
+to your commits and resend the patch files. Do not create new commits. Instead,
+use [Interactive Rebase]({% link _posts/2024-05-19-eat-git-part-3.md %}#interactive-rebase).
+Once done, use the `--annotate` parameter when sending the emails and manually
+edit the subject line to add `v2` (and so on) to the `[Patch]` part.
+
+```bash
+git send-email --annotate --to=maintainer1@linux.com --cc=maintainer2@linux.com \
+  --cc=maintainer3@linux.com master..feat
+```
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+>See [The canonical patch format](https://docs.kernel.org/process/submitting-patches.html#the-canonical-patch-format)
+for more instructions.
+{: .prompt-tip }
+<!-- markdownlint-restore -->
+
 ## Writing Cover Letters
+
+Sometimes you need to provide explanations that don't belong in the commit
+message but can make your decisions in the code clearer to others. You can
+instruct `git-send-email` to send an extra email before any patches, known as a
+cover letter. To do that, add the `--cover-letter` parameter when sending the
+emails. Replace `*** SUBJECT HERE ***` and `*** BLURB HERE ***` with the
+appropriate content.
+
+```bash
+git send-email --annotate --cover-letter --to=maintainer1@linux.com \
+  --cc=maintainer2@linux.com --cc=maintainer3@linux.com master..feat
+```
+
+## Replying to Emails
+
+The maintainer will open your patch in their email client, add comments between
+the lines of your patch, and reply in plain text format.
+
+```
+> > > +
+> > > +/**
+> > > + * usb4_disable_lrf() - Disable Link Recovery flow up to host router
+> > > + * @sw: Router to start
+> > > + *
+> > > + * Disables Link Recovery flow from @sw up to the host router.
+> > > + * Returns true if any Link Recovery flow was disabled. This
+> > > + * can be used to figure out whether the link was setup by us
+> > > + * or the boot firmware so we don't accidentally enable them if
+> > > + * they were not enabled during discovery.
+> >
+> > Okay I think you copied the CLx part here, no? How did you test this?
+> >
+>
+> The way we should handle Link Recovery seems quite similar to CL states.
+```
+
+That's why regular email clients are not ideal for viewing these emails, and you
+should avoid replying to them using services like Gmail's web application.
+Instead, install a terminal-based email client. One example is `neomutt`, which I
+will explain how to set up.
+
+<p align="center"><img src="https://i.postimg.cc/FRNM8N3z/temp-Imagepu7bt2.avif" alt="Dependency Graph"/></p>
+
+To properly set up `neomutt`, create two files: `~/.config/mutt/muttrc` and
+`~/.config/mutt/colors.muttrc`, with the following content:
+
+```bash
+# .muttrc
+set imap_user = 'yourname@gmail.com'
+set imap_pass = 'your_app_password'
+set spoolfile = imaps://imap.gmail.com/INBOX
+set folder = imaps://imap.gmail.com/
+set record="imaps://imap.gmail.com/[Gmail]/Sent Mail"
+set postponed="imaps://imap.gmail.com/[Gmail]/Drafts"
+set trash="imaps://imap.gmail.com/[Gmail]/Trash"
+set mbox="imaps://imap.gmail.com/[Gmail]/All Mail"
+mailboxes =INBOX =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash =[Gmail]/All\ Mail
+set smtp_url = "smtp://yourname@smtp.gmail.com:587/"
+set smtp_pass = $imap_pass
+set ssl_force_tls = yes
+set edit_headers = yes
+set charset = UTF-8
+unset use_domain
+set realname = "Your Name"
+set from = "yourname@gmail.com"
+set use_from = yes
+set envelope_from=yes
+source colors.muttrc
+```
+
+For `colors.muttrc`, copy the content from [here](https://gist.githubusercontent.com/LukeSmithxyz/de94948264649a9264193e96f5610c44/raw/d274199d3ed1bcded2039afe33a771643451a9d5/colors.muttrc). Then run the `neomutt`.
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+> It takes some time to get used to `neomutt` shortcuts. The following is a list
+of the most common ones I use:
+- `c` to change mailbox
+- `space` to go down one page
+- `-` To go up one page
+- `Enter/Return` to go down one line
+- `Backspace/Delete` to go up one line
+{: .prompt-tip }
+<!-- markdownlint-restore -->
+
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
+> To see a patch email with proper text highlighting:  
+1. Choose an email containing a patch. Use the 'Enter/Return' key to open it.
+2. Press `v` to view attachments.
+3. Press `|` to pipe the content to `vim`.
+4. Use `vim -` when asked with the `Pipe to:` question.
+5. In `vim`, use the `:set filetype=diff` command to highlight the text properly.
+6. Use `:qa!` to quit.
+{: .prompt-tip }
+<!-- markdownlint-restore -->
+
+## Ideas on Where to Start
+
+Follow the discussions between developers to find the hotspots of development in
+the Linux kernel. If you are familiar with a protocol, find the latest
+specification and cross-reference the source code with the requirements of that
+specification. Drivers are updated continuously, so they are a good place to
+start. There are many GNU projects out there—follow their bug reporting channels
+and see if you can fix any of them. It takes some time to find your footing, but
+once you do, you'll find this whole process to be a very rich learning
+experience.
