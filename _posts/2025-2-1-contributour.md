@@ -445,7 +445,7 @@ should avoid replying to them using services like Gmail's web application.
 Instead, install a terminal-based email client. One example is `neomutt`, which I
 will explain how to set up.
 
-<p align="center"><img src="https://i.postimg.cc/FRNM8N3z/temp-Imagepu7bt2.avif" alt="Dependency Graph"/></p>
+<p align="center"><img src="https://i.postimg.cc/Gp17Z3DY/temp-Image-Phhqki.avif" alt="Dependency Graph"/></p>
 
 To properly set up `neomutt`, create two files: `~/.config/mutt/muttrc` and
 `~/.config/mutt/colors.muttrc`, with the following content:
@@ -502,11 +502,11 @@ of the most common ones I use:
 
 ## Ideas on Where to Start
 
-Follow the discussions between developers to find the hotspots of development in
-the Linux kernel. If you are familiar with a protocol, find the latest
-specification and cross-reference the source code with the requirements of that
-specification. Drivers are updated continuously, so they are a good place to
-start. There are many GNU projects out there—follow their bug reporting channels
-and see if you can fix any of them. It takes some time to find your footing, but
-once you do, you'll find this whole process to be a very rich learning
-experience.
+Follow the [discussions](https://subspace.kernel.org/vger.kernel.org.html)
+between developers to find the hotspots of development in the Linux kernel. If
+you are familiar with a protocol, find the latest specification and
+cross-reference the source code with the requirements of that specification.
+Drivers are updated continuously, so they are a good place to start. There are
+many GNU projects out there—follow their bug reporting channels and see if you
+can fix any of them. It takes some time to find your footing, but once you do,
+you'll find this whole process to be a very rich learning experience.
