@@ -116,7 +116,7 @@ sudo apt-get install -y \
 
 # other packages...
 sudo apt-get install -y \
-  bc bpfcc-tools bsdextrautils tldr-py trace-cmd tree tuna virt-what yad
+  bc bpfcc-tools bsdextrautils tldr-py trace-cmd tree tuna virt-what yad \
   clang coccinelle coreutils cppcheck cscope curl exuberant-ctags \
   fakeroot flawfinder git gnuplot hwloc indent kmod libnuma-dev \
   man-db net-tools numactl perf-tools-unstable procps psmisc \
