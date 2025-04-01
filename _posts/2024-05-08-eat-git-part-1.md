@@ -186,8 +186,12 @@ cd git/
 
 make configure
 ./configure --prefix=/usr
+# use the following command to build Git with debug symbols
+./configure CFLAGS="-g -O0" LDFLAGS="-g" --prefix=/usr
 make -j $(nproc) all doc info
 sudo make install install-doc install-html install-info
+# use the following command to install Git at custom address
+make install DESTDIR=/custom/address install-doc install-html install-info
 
 git --version
 ```
@@ -205,6 +209,7 @@ sudo nano /etc/apt/sources.list.d/ubuntu.sources
 
 sudo apt-get update
 sudo apt-get build-dep git
+sudo apt-get install docbook2x
 ```
 
 Now we are ready to learn Git.
