@@ -403,6 +403,61 @@ checking out another branch won't overwrite any of those files, switching
 between branches will maintain the state of both the *Index* and the
 *Working Tree*.
 
+## Worktree
+
+For a long time, I used to work in a single directory under Git—typically by
+cloning a repository into a directory and checking out whatever branches I needed
+in that same location. But who says the *Working Tree* must reside in the same
+folder as the *.git* directory?
+
+There are essentially two approaches to managing the working tree. The first is
+what we've used so far: creating branches with `git branch` and switching between
+them using `git checkout`. The second approach uses the `git worktree` command.
+
+With `worktree`, each branch is checked out into its own separate directory. Each
+of these directories becomes a distinct *worktree*. This method changes how you
+initially create or clone your repository compared to the standard approach. In
+the following, I’ll guide you through setting up this alternative *Working Tree*
+management strategy. Keep in mind that others might set it up differently.
+
+Imagine we have a feature branch. To check that out using the `worktree`
+approach, use the following command:
+
+```bash
+git worktree add ../feat feat
+```
+
+The `../feat` path can be anywhere, but I prefer to place my branch directories
+next to the main repository. You can then navigate into `../feat` and start
+working on your branch. While inside a *worktree*, you can check out any
+commit—whether or not it's associated with a branch—but you cannot switch
+branches by name.
+
+To remove the same *worktree*, use:
+
+```bash
+git worktree remove ../feat
+```
+
+Keep in mind that as long as a *worktree* is checked out, its associated branch
+cannot be deleted. Also, while inside `../feat`, you still have access to the
+entire repository and all its branches.
+
+This covers the essentials of using *worktrees*. However, there’s still room to
+improve our workflow. When we initially clone or create a repository using the
+regular `clone` or `init` commands, Git automatically checks out the default
+branch and creates a *Working Tree*. But when working with `worktree`, we don’t
+need that initial *Working Tree*—instead, we can check out the main branch later
+in its own directory. To skip the default *Working Tree*, use the `--bare` option
+with `clone` or `init`.
+
+But what advantage does this approach have over the usual one? If you're working
+on a large project with many files and long compilation times, switching between
+branches can trigger a full rebuild. This happens because the build system may
+mistakenly detect changes in files due to timestamp updates or differences
+between branches. With `worktree`, each branch lives in its own directory,
+preserving separate build artifacts and avoiding unnecessary recompilation.
+
 ## Miscellaneous
 
 In this section, I'll introduce some Git tools that you might not use frequently
