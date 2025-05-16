@@ -33,6 +33,7 @@ discussed material in each part:
     - Cherry Picking
     - Interactive Rebase
     - Stashes
+    - Worktree
     - Miscellaneous
 4. Team Workflows
     - Remotes
@@ -42,6 +43,7 @@ discussed material in each part:
     - Conflicts
 5. Do and Undo
     - Commit on Wrong Branch
+    - Edits on Remote
     - Merge in Rebase Workflow
 
 In Part 1, we get to know Git and become comfortable using it. If you're
@@ -62,10 +64,10 @@ you will find essential information if you have been using Git and want to learn
 how to apply your knowledge in a collaborative environment. I will introduce
 three workflows that I have successfully used with my colleagues.
 
-In [Part 5]({% link _posts/2024-05-28-eat-git-part-5.md %}) I
-will share my experience with Git in my previous two positions, where I
-introduced my colleagues to Git and integrated it into our daily development
-workflow. This part will focus on how you can undo actions in Git.
+In [Part 5]({% link _posts/2024-05-28-eat-git-part-5.md %}), I will share my
+experience with Git in my previous two positions, where I introduced my
+colleagues to Git and integrated it into our daily development workflow. This
+section will focus on how to identify and correct mistakes made while using Git.
 
 ### Why Another Git Tutorial?
 
@@ -538,14 +540,14 @@ To create a branch from another branch:
 
 ```bash
 # to create feat1 from main
-git checkout -b feat1 main
+git branch feat1 main
 ```
 
 To create a branch from a commit:
 
 ```bash
 # to create feat2 from second commit
-git checkout -b feat2 68d9628
+git branch feat2 68d9628
 ```
 
 Lets make a commit on each:
@@ -576,6 +578,18 @@ git log --oneline --all --graph
 # * 8c61dd6 Add Berman and Bash
 ```
 
+To create a new branch and immediately switch to it, you can use the following:
+
+```bash
+git checkout -b <branch-name> <from-commit>
+```
+
+Or, using the modern alternative:
+
+```bash
+git switch -c <branch-name> <from-commit>
+```
+
 If we run `git diff feat2 feat1`, we can see the changes required to go from the
 *feat2* branch to the *feat1* branch, indicating the differences between them.
 
@@ -594,12 +608,17 @@ index 1785192..7659b36 100644
 ```
 
 You can transfer the work done in one branch to another branch or merge branches
-together. In
-[Part 3]({% link _posts/2024-05-19-eat-git-part-3.md %}) and
-[Part 4]({% link _posts/2024-05-23-eat-git-part-4.md %}), we
-will explore how to share work from one branch to another branch within the same
-Git repository or in someone else's repository. For now, we have learned how to
-create branches, commit on them, switch between them, and compare them.
+together. In [Part 3]({% link _posts/2024-05-19-eat-git-part-3.md %}) and
+[Part 4]({% link _posts/2024-05-23-eat-git-part-4.md %}), we will explore how to
+share work from one branch to another branch within the same Git repository or in
+someone else's repository. For now, we have learned how to create branches,
+commit on them, switch between them, and compare them.
+
+In [Part 3]({% link _posts/2024-05-19-eat-git-part-3.md %}), once you have a
+deeper understanding of Git, I will explain the `worktree` command. With
+`worktree`, you can check out each branch into a separate directory, allowing you
+to work with multiple branches side by side. We will explore the benefits of this
+approach.
 
 ## History
 
