@@ -8,7 +8,7 @@ tags: [open-source, linux, git, github, contribution]
 pin: true
 date: 2025-02-01
 image:
-  path: /assets/img/Tux.svg
+  path: https://raw.githubusercontent.com/MhmRhm/tutorials/refs/heads/main/assets/img/Tux.svg
   alt: "Guide to tools and workflows for open source contributions"
 ---
 
