@@ -347,6 +347,10 @@ git reset --hard HEAD~
 git am *.patch
 ```
 
+Depending on the situation, you may or may not need to squash the patch with
+previous commits. If you need to squash, you can use `git rebase -i` to combine
+the commits after applying the patch.
+
 - Step 4: Perform the rebase by running:
 
 ```bash
