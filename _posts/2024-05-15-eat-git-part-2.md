@@ -175,16 +175,19 @@ You can see that the *parent* has our previous commit hash. If you change
 something in *employees.md* file before making the first commit, the file hash
 changes. Consequently, the commit hash changes as well, and the parent commit in
 the following commits also changes. Thus, every commit hash in your repository
-will change. If your colleagues or other open-source contributors based their
-work on your commit, meaning they have a *parent* commit somewhere that refers
-to a commit you made, and you change something in the history, those who have
-your commit hash in their repository will be left disconnected from your changes
-, and you will no longer share the same past. Furthermore, there will be a new
-group of people who will base their work on your new hashes. So, you cannot go
-back either. This can cause a divergence that's very difficult, if not
-impossible, to fix. That's why it's advised not to change what you have
-published. Git heavily relies on commit hashes to track changes in a repository
-and determine what actions need to be taken.
+will change.
+
+If your colleagues or other open-source contributors based their work on your
+commit, meaning they have a *parent* commit somewhere that refers to a commit
+you made, and you change something in the history, those who have your commit
+hash in their repository will be left disconnected from your changes, and you
+will no longer share the same past.
+
+Furthermore, there will be a new group of people who will base their work on
+your new hashes. So, you cannot revert back either. This can cause a divergence
+that's very difficult, if not impossible, to fix. That's why it's advised not to
+change what you have published. Git heavily relies on commit hashes to track
+changes in a repository and determine what actions need to be taken.
 
 ## Branches
 
@@ -339,7 +342,7 @@ mine.
 Now is the time to create the actual commit:
 
 ```bash
-git commit-tree 63bce7 -p 181590f -m 'Add Keilar'
+git commit-tree 758f28 -p 130a621 -m 'Add Keilar'
 # 1f2ebc318742f42f86a33db0948f37b724106b87
 
 git log --oneline --all --graph

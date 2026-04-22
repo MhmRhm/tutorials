@@ -323,7 +323,7 @@ rebasing in a rebase workflow. The fix is quite easy. Just note down the head
 hash and create a patch file before starting, and you will be safe. Here’s the
 procedure:
 
-1. Note down the head hash and create a patch file:
+- Step 1: Note down the head hash and create a patch file:
 
 ```bash
 git checkout feat
@@ -332,20 +332,22 @@ git format-patch HEAD~
 ```
 
 This shows the current head hash and creates a patch file from the last commit.
+The last commit is the merge commit that we want to get rid of, and the patch
+file contains the changes introduced resolving the conflicts during the merge.
 
-2. Hard reset to `HEAD~` on the feature branch to get rid of the merge commit:
+- Step 2: Hard reset to `HEAD~` on the feature branch to get rid of the merge commit:
 
 ```bash
 git reset --hard HEAD~
 ```
 
-3. Optionally apply the patch created from `git format-patch HEAD~`:
+- Step 3: Optionally apply the patch created from `git format-patch HEAD~`:
 
 ```bash
 git am *.patch
 ```
 
-4. Perform the rebase by running:
+- Step 4: Perform the rebase by running:
 
 ```bash
 git rebase main
@@ -353,7 +355,7 @@ git rebase main
 
 If you skip step 3, you may have to resolve conflicts again.
 
-5. Force push to the remote repository:
+- Step 5: Force push to the remote repository:
 
 ```bash
 git push --force origin feat

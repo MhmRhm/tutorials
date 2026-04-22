@@ -287,15 +287,15 @@ maintain a clean history. You won't see commit messages like
 *"Fix bug report #6623"*.
 
 In our example project, before publishing our *main* branch, let's combine the
-first two commits together (to minimize the chance of getting canceled ;)).
+first two commits together.
 
 ```bash
 git checkout main
 git rebase -i --root
 ```
 
-The `git rebase -i` command expects a commit and will list all the commits from
-HEAD up to but not including that commit. Because of this behavior, you cannot
+The `git rebase -i` command expects a commit hash and will list all the commits
+from HEAD up to but not including that hash. Because of this behavior, you cannot
 edit the initial commit. That's why I used the `--root` flag. The list is
 ordered from old at the top to new at the bottom.
 
